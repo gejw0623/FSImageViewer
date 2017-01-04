@@ -106,12 +106,18 @@
 
         NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:aURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:_timeoutInterval];
         AFHTTPRequestOperation *imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
-        imageRequestOperation.responseSerializer = [AFImageResponseSerializer serializer];
+//        imageRequestOperation.responseSerializer = [AFImageResponseSerializer serializer];
+        imageRequestOperation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"image/jpg", nil];
         [runningRequests addObject:imageRequestOperation];
         __weak AFHTTPRequestOperation *imageRequestOperationForBlock = imageRequestOperation;
 
         [imageRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            UIImage *image = responseObject;
+            UIImage *image = nil;
+            if ([responseObject isKindOfClass:[UIImage class]]) {
+                image = responseObject;
+            } else {
+                image = [UIImage imageWithData:responseObject];
+            }
             [[EGOCache globalCache] setImage:image forKey:cacheKey];
             if (imageBlock) {
                 imageBlock(image, nil);
