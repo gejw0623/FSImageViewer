@@ -106,8 +106,7 @@
 
         NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:aURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:_timeoutInterval];
         AFHTTPRequestOperation *imageRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
-//        imageRequestOperation.responseSerializer = [AFImageResponseSerializer serializer];
-        imageRequestOperation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"image/jpg", nil];
+        imageRequestOperation.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/javascript", @"image/jpg", @"image/jpeg", nil];
         [runningRequests addObject:imageRequestOperation];
         __weak AFHTTPRequestOperation *imageRequestOperationForBlock = imageRequestOperation;
 
